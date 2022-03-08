@@ -29,7 +29,7 @@ N'oubliez pas d'inscrire le token et le prefix dans le fichier `config.json`.
 
 ## Exemples
 
-![](https://cdn.discordapp.com/attachments/876021172934938645/950848422171258880/unknown.png) ![](https://cdn.discordapp.com/attachments/876021172934938645/950848422171258880/unknown.png)
+![](https://cdn.discordapp.com/attachments/876021172934938645/950848422171258880/unknown.png) ![](https://cdn.discordapp.com/attachments/876021172934938645/950848735108272179/unknown.png)
 
 ## Contribuation
 Le projet a été réalisé par Pydjama3 et moi même. Cependant, le projet n'est pas terminé !
