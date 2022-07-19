@@ -28,6 +28,7 @@ module.exports.onCoolDown = onCoolDown;
 
 module.exports.replacemsg = replacedefaultmessages;
 module.exports.embedError = embedError;
+module.exports.RandomMine = RandomMine;
 
 function replacedefaultmessages(text, o = {}) {
   if (!text || text == undefined || text == null)
@@ -663,4 +664,32 @@ function embedError(error, channel) {
   channel.send({
     embed: { description: "`❌` " + error, color: "EC5922" },
   });
+}
+
+function RandomMine(chance) {
+  let table = [
+    { name: "stone", chance: 61 / 100 },
+    { name: "amethyste", chance: 13 / 100, size: 6 },
+    { name: "titane", chance: 10 / 100, size: 5 },
+    { name: "gravel", chance: 8 / 100, size: 8 },
+    { name: "paladium", chance: 5 / 100, size: 4 },
+    { name: "trixium", chance: 2 / 100, size: 2 },
+    { name: "findium", chance: 1 / 100, size: 2 },
+  ];
+  let rand_purcent = Math.floor(Math.random() * chance + 1) / 100;
+
+  for (let i = 0; i < table.length; i++) {
+    if (rand_purcent > table[i].chance) {
+      let filon = 1;
+      if (table[i].name !== "stone") {
+        filon = Math.floor(Math.random() * table[i].size) + 1;
+      }
+      return {
+        num: i,
+        name: table[i].name,
+        chance: table[i].chance,
+        multiplieur: filon,
+      };
+    }
+  }
 }

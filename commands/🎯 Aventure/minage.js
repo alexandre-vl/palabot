@@ -38,6 +38,10 @@ module.exports = {
       );
     }
 
+    let current = db.get(`adventure.players`)
+    current.find((p) => p.id === message.author.id).last_command_time = new Date();
+    db.set(`adventure.players`, current)
+
     let mined = 0;
     let today = message.editedTimestamp || message.createdTimestamp;
     var time = moment(today).format("hh:mm:ss");
@@ -73,10 +77,9 @@ module.exports = {
       index = players.indexOf(players.find((p) => p.id === message.author.id));
       players[index].mining.message = m;
       players[index].mining.startedDate = today;
-      console.log(today);
       players[index].status = "mining";
       db.set("adventure.players", players);
-      mining(message.channel, message.author);
+      // mining(message.channel, message.author);
       m.react("📛").then((r) => {
         const collector = m.createReactionCollector(
           (reaction, user) =>

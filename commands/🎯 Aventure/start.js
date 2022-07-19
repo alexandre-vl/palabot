@@ -50,6 +50,7 @@ module.exports = {
       life: 20,
       xp: 0,
       level: 0,
+      last_command_time:new Date(),
       mining: {
         message: null,
         startedDate: null,

@@ -1,7 +1,7 @@
 const { MessageEmbed, GuildMember, User } = require("discord.js-12");
 const config = require("../../botconfig/config.json");
 const ee = require("../../botconfig/embed.json");
-const { delay } = require("../../handlers/functions.js");
+const { delay, embedError } = require("../../handlers/functions.js");
 module.exports = {
   name: "arena",
   category: "Adventure",
@@ -17,6 +17,11 @@ module.exports = {
       let user = message.author;
       if (opponent.id === message.author.id)
         return message.channel.send("Vous ne pouvez pas vous mentionnez.");
+
+      let current = db.get(`adventure.players`)
+      current.find((p) => p.id === message.author.id).last_command_time = new Date();
+      current.find((p) => p.id === message.author.id).status = "in combat";
+      db.set(`adventure.players`, current)
 
       let events = [
         "clic",
@@ -131,7 +136,7 @@ module.exports = {
           PVPembed.setDescription(combo.name);
         } else {
           PVPembed.setDescription(
-            "Combo X" + combo.multi + " de " + combo.name
+            "Combo x" + combo.multi + " de " + combo.name
           );
         }
 
@@ -227,6 +232,15 @@ module.exports = {
             }
           }
 
+          // TODO: ajouter un event spécial pour "parer": 
+          //  si le premier "clic" et le deuxième "pare"  
+          //    => avec un petit délai, personne ne perd des points de vie; avec un grand délai, le deuxième perd des points de vie
+          //  si le premier "pare" et le deuxième "clic" avec un petit ou grand délai
+          //    => personne ne perd des points de vie
+          // si le premier "clic" et le deuxième "clic" avec un petit ou grand délai
+          //    => le deuxième perd des points de viens
+          // si les deux parent
+          //    => personne ne perd de points de vie
           if (winner.first().author.id === _opponent.id) {
             if (event === "pomme") {
               _opponent.life += 3;
@@ -333,7 +347,13 @@ module.exports = {
         .setTimestamp();
 
       await Message.edit(PVPembed);
+
+      let players = db.get("adventure.players")
+      players.find((p) => p.id === message.author.id).last_command_time = new Date();
+      current.find((p) => p.id === message.author.id).status = "idle";
+      db.set("adventure.players", players)
     } catch (e) {
+      embedError("```"+e+"```", message.channel)
       return console.log(e);
     }
   },

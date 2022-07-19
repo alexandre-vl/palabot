@@ -3,40 +3,11 @@ const settings = require("../../botconfig/settings.json");
 const ee = require("../../botconfig/embed.json");
 const Discord = require("discord.js-12");
 const db = require("quick.db");
-const { embedError } = require("../../handlers/functions.js");
+const { embedError, RandomMine } = require("../../handlers/functions.js");
 const moment = require("moment");
 const sleep = require("atomic-sleep");
 
-function RandomMine(chance) {
-  let table = [
-    { name: "stone", chance: 61 / 100 },
-    { name: "amethyste", chance: 13 / 100, size: 6 },
-    { name: "titane", chance: 10 / 100, size: 5 },
-    { name: "gravel", chance: 8 / 100, size: 8 },
-    { name: "paladium", chance: 5 / 100, size: 4 },
-    { name: "trixium", chance: 2 / 100, size: 2 },
-    { name: "findium", chance: 1 / 100, size: 2 },
-  ];
-  let rand_purcent = Math.floor(Math.random() * chance + 1) / 100;
-
-  for (let i = 0; i < table.length; i++) {
-    if (rand_purcent > table[i].chance) {
-      let filon = 1;
-      if (table[i].name !== "stone") {
-        filon = Math.floor(Math.random() * table[i].size) + 1;
-      }
-      return {
-        num: i,
-        name: table[i].name,
-        chance: table[i].chance,
-        multiplieur: filon,
-      };
-    }
-  }
-}
-
 module.exports = async (client, channel, user) => {
-  console.log("typing");
   if (
     !db.get("adventure.players") ||
     !db.get("adventure.players").find((p) => p.id === user.id) ||
@@ -88,6 +59,9 @@ module.exports = async (client, channel, user) => {
   }
 
   while (author.typingIn(message.channel)) {
+    let current = db.get(`adventure.players`)
+    current.find((p) => p.id === user.id).last_command_time = new Date();
+    db.set(`adventure.players`, current)
     var dura = moment.duration(Date.now() - date);
     let time = `\`${dura.hours()}h, ${dura.minutes()}m et ${dura.seconds()}s\``;
     if (dura.hours() >= 1) {
@@ -95,6 +69,7 @@ module.exports = async (client, channel, user) => {
       message.edit("⌛ Minage terminé");
       players = db.get("adventure.players");
       index = players.indexOf(players.find((p) => p.id === user.id));
+      players[index].status = "idle";
       players[index].mining = {
         message: null,
         startedDate: null,

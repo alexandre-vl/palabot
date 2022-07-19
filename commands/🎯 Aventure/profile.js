@@ -27,6 +27,10 @@ module.exports = {
       );
     }
 
+    let current = db.get(`adventure.players`)
+    current.find((p) => p.id === message.author.id).last_command_time = new Date();
+    db.set(`adventure.players`, current)
+
     players = db.get("adventure.players");
 
     let player = players.find((p) => p.id === message.author.id);
