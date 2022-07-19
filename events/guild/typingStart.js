@@ -12,7 +12,7 @@ module.exports = async (client, channel, user) => {
     !db.get("adventure.players") ||
     !db.get("adventure.players").find((p) => p.id === user.id) ||
     !db.get("adventure.players").find((p) => p.id === user.id).status ===
-      "mining"
+    "mining"
   ) {
     return;
   }
@@ -90,23 +90,23 @@ module.exports = async (client, channel, user) => {
 
     let minerais = [
       "<:amethyste:939197156059906209> Améthyste: " +
-        (player.inventory.amethyste == undefined
-          ? "0"
-          : player.inventory.amethyste),
+      (player.inventory.amethyste == undefined
+        ? "0"
+        : player.inventory.amethyste),
       "<:titane:939197157922209822> Titane: " +
-        (player.inventory.titane == undefined ? "0" : player.inventory.titane),
+      (player.inventory.titane == undefined ? "0" : player.inventory.titane),
       "<:paladium:939197157725061260> Paladium: " +
-        (player.inventory.paladium == undefined
-          ? "0"
-          : player.inventory.paladium),
+      (player.inventory.paladium == undefined
+        ? "0"
+        : player.inventory.paladium),
       "<:findium:939197156273815612> Findium: " +
-        (player.inventory.findium == undefined
-          ? "0"
-          : player.inventory.findium),
+      (player.inventory.findium == undefined
+        ? "0"
+        : player.inventory.findium),
       "<:trixium:877851448124264458> Trixium: " +
-        (player.inventory.trixium == undefined
-          ? "0"
-          : player.inventory.trixium),
+      (player.inventory.trixium == undefined
+        ? "0"
+        : player.inventory.trixium),
     ];
 
     let MinageEmbed = {

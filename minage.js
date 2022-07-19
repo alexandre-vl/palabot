@@ -849,4 +849,4 @@ client.on("typingStart", async (channel, user) => {
   console.log("ONLINE " + adventure.get("online"));
 });
 
-client.login("NjkzMTUyNjE5OTkyMTg2OTgw.Xn46rg.g3cy4uAdUDjSLnYmGZBvMwCHdig");
+client.login("-");

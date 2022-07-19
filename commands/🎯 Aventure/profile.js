@@ -37,7 +37,7 @@ module.exports = {
 
     let minerais = [
       "<:amethyste:939197156059906209> Améthyste: " +
-        player.inventory.amethyste,
+      player.inventory.amethyste,
       "<:titane:939197157922209822> Titane: " + player.inventory.titane,
       "<:paladium:939197157725061260> Paladium: " + player.inventory.paladium,
       "<:findium:939197156273815612> Findium: " + player.inventory.findium,

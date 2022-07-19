@@ -173,8 +173,8 @@ module.exports = {
         combo.name === "Il n'y a pas de combo."
           ? PVPembed.setDescription(combo.name)
           : PVPembed.setDescription(
-              "Combo X" + combo.multi + " de " + combo.name
-            );
+            "Combo X" + combo.multi + " de " + combo.name
+          );
 
         await Message.edit(PVPembed);
         const filter = (res) =>
@@ -353,7 +353,7 @@ module.exports = {
       current.find((p) => p.id === message.author.id).status = "idle";
       db.set("adventure.players", players)
     } catch (e) {
-      embedError("```"+e+"```", message.channel)
+      embedError("```" + e + "```", message.channel)
       return console.log(e);
     }
   },

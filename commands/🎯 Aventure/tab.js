@@ -22,13 +22,13 @@ module.exports = {
             let players = db.get("adventure.players");
             let onlines = []
             players.forEach(player => {
-                if((new Date().getHours() - new Date(player.last_command_time).getHours()) < 1){
+                if ((new Date().getHours() - new Date(player.last_command_time).getHours()) < 1) {
                     onlines.push(player)
                 }
             })
 
-            if(!onlines.find((p) => p.id === message.author.id) || !onlines) return message.reply("vous n'êtes pas en jeu.");
-            else{
+            if (!onlines.find((p) => p.id === message.author.id) || !onlines) return message.reply("vous n'êtes pas en jeu.");
+            else {
                 let embed = new Discord.MessageEmbed().setTitle(onlines.length + " joueurs en ligne").setColor("#408080")
 
                 onlines.forEach(element => {
@@ -36,26 +36,26 @@ module.exports = {
                     let adv_status = db.get("adventure.players").find((p) => p.id === element.id).status;
                     let dc_status = client.users.cache.find(user => user.id === element.id).presence.status;
                     let adv_emoji, dc_emoji;
-                    switch(adv_status) {
+                    switch (adv_status) {
                         case "mining":
-                            emoji="⛏";
+                            emoji = "⛏";
                             break
                         case "idle":
                             emoji = "💭";
                             break
                     }
-                    switch(dc_status){
+                    switch (dc_status) {
                         case "online":
-                            dc_emoji="🟢"
+                            dc_emoji = "🟢"
                             break
                         case "offline":
-                            dc_emoji="🔘"
+                            dc_emoji = "🔘"
                             break
                         case "dnd":
-                            dc_emoji="🔴"
+                            dc_emoji = "🔴"
                             break
                         case "idle":
-                            dc_emoji="🟠"
+                            dc_emoji = "🟠"
                             break
                     }
 
@@ -63,9 +63,9 @@ module.exports = {
                 });
                 message.channel.send(embed);
             }
-        }catch (e) {
+        } catch (e) {
             embedError(
-                "```"+e+"```",
+                "```" + e + "```",
                 message.channel)
             return console.log(e);
         }
