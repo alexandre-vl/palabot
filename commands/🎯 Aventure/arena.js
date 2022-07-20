@@ -2,6 +2,7 @@ const { MessageEmbed, GuildMember, User } = require("discord.js-12");
 const config = require("../../botconfig/config.json");
 const ee = require("../../botconfig/embed.json");
 const { delay, embedError } = require("../../handlers/functions.js");
+const db = require("quick.db");
 module.exports = {
   name: "arena",
   category: "Adventure",
@@ -12,16 +13,17 @@ module.exports = {
   run: async (client, message, args, user, text, prefix) => {
     try {
       let opponent = message.mentions.members.first();
-      if (!opponent)
-        return message.channel.send("Veuillez mentionner un utilisateur.");
+      if (!db.get("adventure.players").find((p) => p.id === message.author.id))
+        return message.channel.send("Vous n'êtes pas en jeu !");
+      if (!opponent || !db.get("adventure.players").find((p) => p.id === message.author.id))
+        return message.channel.send("Veuillez mentionner un utilisateur en jeu !");
       let user = message.author;
       if (opponent.id === message.author.id)
-        return message.channel.send("Vous ne pouvez pas vous mentionnez.");
+        return message.channel.send("Vous ne pouvez pas vous mentionnez !");
 
       let current = db.get(`adventure.players`)
       current.find((p) => p.id === message.author.id).last_command_time = new Date();
       current.find((p) => p.id === message.author.id).status = "in combat";
-      db.set(`adventure.players`, current)
 
       let events = [
         "clic",
@@ -59,8 +61,13 @@ module.exports = {
       );
       const verification = await verify(message.channel, opponent);
       if (!verification) {
+        db.set(`adventure.players`, current)
         return message.reply("Il semble avoir décliné ton offre ...");
       }
+
+      current.find((p) => p.id === opponent.id).last_command_time = new Date();
+      current.find((p) => p.id === opponent.id).status = "in combat";
+      db.set(`adventure.players`, current)
 
       let lives = 20;
       let _opponent = {
@@ -350,7 +357,9 @@ module.exports = {
 
       let players = db.get("adventure.players")
       players.find((p) => p.id === message.author.id).last_command_time = new Date();
-      current.find((p) => p.id === message.author.id).status = "idle";
+      players.find((p) => p.id === message.author.id).status = "idle";
+      players.find((p) => p.id === opponent.id).last_command_time = new Date();
+      players.find((p) => p.id === opponent.id).status = "idle";
       db.set("adventure.players", players)
     } catch (e) {
       embedError("```" + e + "```", message.channel)

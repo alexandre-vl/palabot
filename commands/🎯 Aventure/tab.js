@@ -5,7 +5,6 @@ const Discord = require("discord.js-12");
 const db = require("quick.db");
 const { embedError } = require("../../handlers/functions.js");
 const path = require('path');
-const { User } = require("discord.js");
 module.exports = {
     name: path.basename(__filename).split(".")[0],
     aliases: ["online", "list"],
@@ -42,6 +41,9 @@ module.exports = {
                             break
                         case "idle":
                             emoji = "💭";
+                            break
+                        case "in combat":
+                            emoji = "⚔"
                             break
                     }
                     switch (dc_status) {

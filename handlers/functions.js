@@ -1,4 +1,4 @@
-const { MessageEmbed, Collection } = require("discord.js-12");
+const { MessageEmbed, Collection, Messagen, User} = require("discord.js-12");
 const config = require("../botconfig/config.json");
 const ee = require("../botconfig/embed.json");
 const settings = require("../botconfig/settings.json");
@@ -29,6 +29,7 @@ module.exports.onCoolDown = onCoolDown;
 module.exports.replacemsg = replacedefaultmessages;
 module.exports.embedError = embedError;
 module.exports.RandomMine = RandomMine;
+module.exports.sendToUsers = sendToUsers;
 
 function replacedefaultmessages(text, o = {}) {
   if (!text || text == undefined || text == null)
@@ -691,5 +692,16 @@ function RandomMine(chance) {
         multiplieur: filon,
       };
     }
+  }
+}
+
+async function sendToUsers(users, message, options){
+  try{
+    options = options || null
+    users.forEach(async(user) => {
+      await user.send(message, options ? options:{})
+    });
+  }catch(error){
+    console.error(e)
   }
 }
